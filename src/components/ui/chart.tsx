@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 
@@ -353,6 +354,83 @@ function getPayloadConfigFromPayload(
     : config[key as keyof typeof config]
 }
 
+// Add BarChart component
+interface BarChartProps {
+  data: any[]
+  index: string
+  categories: string[]
+  colors?: string[]
+  valueFormatter?: (value: number) => string
+  yAxisWidth?: number
+}
+
+const BarChart = ({
+  data,
+  index,
+  categories,
+  colors = ["blue", "yellow"],
+  valueFormatter = (value) => `${value}`,
+  yAxisWidth = 40,
+}: BarChartProps) => {
+  // Create a unique ID for each bar based on category name
+  const getBarId = (categoryName: string) => `bar-${categoryName.replace(/\s+/g, '-').toLowerCase()}`;
+
+  // Generate configuration for the chart
+  const chartConfig: ChartConfig = categories.reduce((acc, category, idx) => {
+    acc[category] = {
+      label: category.charAt(0).toUpperCase() + category.slice(1),
+      color: colors[idx % colors.length],
+    };
+    return acc;
+  }, {} as ChartConfig);
+
+  return (
+    <ChartContainer config={chartConfig}>
+      <RechartsPrimitive.ComposedChart data={data}>
+        <RechartsPrimitive.XAxis 
+          dataKey={index} 
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+        />
+        <RechartsPrimitive.YAxis
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+          width={yAxisWidth}
+          tickFormatter={valueFormatter}
+        />
+        <RechartsPrimitive.Tooltip 
+          content={
+            <ChartTooltipContent 
+              formatter={(value: any) => [valueFormatter(value), ""]}
+            />
+          }
+        />
+        <RechartsPrimitive.Legend 
+          content={<ChartLegendContent />}
+        />
+        <RechartsPrimitive.CartesianGrid 
+          strokeDasharray="3 3"
+          vertical={false}
+        />
+        {categories.map((category, index) => (
+          <RechartsPrimitive.Bar 
+            key={category}
+            dataKey={category}
+            name={category}
+            fill={`var(--color-${category})`}
+            radius={[4, 4, 0, 0]}
+            id={getBarId(category)}
+          />
+        ))}
+      </RechartsPrimitive.ComposedChart>
+    </ChartContainer>
+  );
+};
+
 export {
   ChartContainer,
   ChartTooltip,
@@ -360,4 +438,5 @@ export {
   ChartLegend,
   ChartLegendContent,
   ChartStyle,
+  BarChart
 }
