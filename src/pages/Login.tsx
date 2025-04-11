@@ -1,18 +1,17 @@
 
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useUser } from "@/contexts/UserContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { AlertCircle } from "lucide-react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isLoading } = useUser();
-  const navigate = useNavigate();
+  const { login, isLoading, error } = useUser();
   const { toast } = useToast();
 
   const handleLogin = (e: React.FormEvent) => {
@@ -59,6 +58,12 @@ const Login = () => {
           </CardHeader>
           <form onSubmit={handleLogin}>
             <CardContent className="space-y-4">
+              {error && (
+                <div className="bg-red-50 p-3 rounded-md border border-red-200 flex items-start gap-2 text-red-800">
+                  <AlertCircle className="h-5 w-5 mt-0.5" />
+                  <span>{error}</span>
+                </div>
+              )}
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input

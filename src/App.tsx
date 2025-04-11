@@ -10,6 +10,7 @@ import { CourseProvider } from "@/contexts/CourseContext";
 
 // Page imports
 import Login from "./pages/Login";
+import Index from "./pages/Index";
 
 // Student pages
 import StudentDashboard from "./pages/student/StudentDashboard";
@@ -29,12 +30,12 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <UserProvider>
-        <CourseProvider>
-          <SidebarProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
+      <BrowserRouter>
+        <UserProvider>
+          <CourseProvider>
+            <SidebarProvider>
+              <Toaster />
+              <Sonner />
               <Routes>
                 {/* Auth routes */}
                 <Route path="/login" element={<Login />} />
@@ -52,15 +53,15 @@ const App = () => (
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
                 
                 {/* Redirect root to login */}
-                <Route path="/" element={<Navigate to="/login" replace />} />
+                <Route path="/" element={<Index />} />
                 
                 {/* Redirect any other routes to login */}
                 <Route path="*" element={<Navigate to="/login" replace />} />
               </Routes>
-            </BrowserRouter>
-          </SidebarProvider>
-        </CourseProvider>
-      </UserProvider>
+            </SidebarProvider>
+          </CourseProvider>
+        </UserProvider>
+      </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );
