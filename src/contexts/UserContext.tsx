@@ -46,7 +46,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     setTimeout(() => {
       // Mock users for demo
       if (email === "student@example.com" && password === "password") {
-        const user = {
+        const user: User = {
           id: "1",
           name: "Alex Student",
           email: "student@example.com",
@@ -57,7 +57,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem('currentUser', JSON.stringify(user));
         navigate("/student/dashboard");
       } else if (email === "instructor@example.com" && password === "password") {
-        const user = {
+        const user: User = {
           id: "2",
           name: "Taylor Teacher",
           email: "instructor@example.com",
@@ -68,7 +68,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem('currentUser', JSON.stringify(user));
         navigate("/instructor/dashboard");
       } else if (email === "admin@example.com" && password === "password") {
-        const user = {
+        const user: User = {
           id: "3",
           name: "Admin User",
           email: "admin@example.com",
